@@ -1,0 +1,24 @@
+{
+  "test_season": "2025-26",
+  "trained_through": "2026-04-12",
+  "summary": {
+    "pts": {
+      "mae_season_avg": 4.947,
+      "mae_last10_avg": 4.93,
+      "mae_model": 4.848,
+      "range_coverage": 0.791
+    },
+    "reb": {
+      "mae_season_avg": 1.987,
+      "mae_last10_avg": 2.007,
+      "mae_model": 1.966,
+      "range_coverage": 0.788
+    },
+    "ast": {
+      "mae_season_avg": 1.452,
+      "mae_last10_avg": 1.464,
+      "mae_model": 1.439,
+      "range_coverage": 0.906
+    }
+  }
+}
