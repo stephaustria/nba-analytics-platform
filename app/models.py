@@ -73,3 +73,84 @@ class PlayerGameStat(BoxScoreMixin, Base):
     team_id: Mapped[int] = mapped_column(ForeignKey("teams.id"))
 
     __table_args__ = (Index("ix_pgs_player", "player_id"), Index("ix_pgs_team", "team_id"))
+
+class PlayerSeasonAdvanced(Base):
+    __tablename__ = "player_season_advanced"
+    player_id: Mapped[int] = mapped_column(ForeignKey("players.id"), primary_key=True)
+    season: Mapped[str] = mapped_column(String(7), primary_key=True)
+    season_type: Mapped[str] = mapped_column(String(20), primary_key=True)
+    gp: Mapped[int] = mapped_column(Integer)
+    minutes: Mapped[float | None] = mapped_column(Float)
+    mpg: Mapped[float | None] = mapped_column(Float)
+    ts_pct: Mapped[float | None] = mapped_column(Float)
+    efg_pct: Mapped[float | None] = mapped_column(Float)
+    usg_pct: Mapped[float | None] = mapped_column(Float)
+    ast_pct: Mapped[float | None] = mapped_column(Float)
+    reb_pct: Mapped[float | None] = mapped_column(Float)
+    tov_pct: Mapped[float | None] = mapped_column(Float)
+    game_score: Mapped[float | None] = mapped_column(Float)
+    pts_per36: Mapped[float | None] = mapped_column(Float)
+    reb_per36: Mapped[float | None] = mapped_column(Float)
+    ast_per36: Mapped[float | None] = mapped_column(Float)
+
+
+class TeamSeasonAdvanced(Base):
+    __tablename__ = "team_season_advanced"
+    team_id: Mapped[int] = mapped_column(ForeignKey("teams.id"), primary_key=True)
+    season: Mapped[str] = mapped_column(String(7), primary_key=True)
+    season_type: Mapped[str] = mapped_column(String(20), primary_key=True)
+    gp: Mapped[int] = mapped_column(Integer)
+    wins: Mapped[int] = mapped_column(Integer)
+    losses: Mapped[int] = mapped_column(Integer)
+    pace: Mapped[float | None] = mapped_column(Float)
+    off_rtg: Mapped[float | None] = mapped_column(Float)
+    def_rtg: Mapped[float | None] = mapped_column(Float)
+    net_rtg: Mapped[float | None] = mapped_column(Float)
+    efg_pct: Mapped[float | None] = mapped_column(Float)
+    tov_pct: Mapped[float | None] = mapped_column(Float)
+    orb_pct: Mapped[float | None] = mapped_column(Float)
+    ft_rate: Mapped[float | None] = mapped_column(Float)
+    opp_efg_pct: Mapped[float | None] = mapped_column(Float)
+    opp_tov_pct: Mapped[float | None] = mapped_column(Float)
+    drb_pct: Mapped[float | None] = mapped_column(Float)
+    opp_ft_rate: Mapped[float | None] = mapped_column(Float)
+
+
+class Shot(Base):
+    __tablename__ = "shots"
+    game_id: Mapped[str] = mapped_column(String(10), primary_key=True)
+    game_event_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    player_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    team_id: Mapped[int] = mapped_column(Integer)
+    season: Mapped[str] = mapped_column(String(7))
+    season_type: Mapped[str] = mapped_column(String(20))
+    period: Mapped[int | None] = mapped_column(Integer)
+    action_type: Mapped[str | None] = mapped_column(String(80))
+    shot_type: Mapped[str | None] = mapped_column(String(30))
+    zone_basic: Mapped[str | None] = mapped_column(String(40))
+    zone_area: Mapped[str | None] = mapped_column(String(40))
+    zone_range: Mapped[str | None] = mapped_column(String(40))
+    distance: Mapped[int | None] = mapped_column(Integer)
+    loc_x: Mapped[int | None] = mapped_column(Integer)
+    loc_y: Mapped[int | None] = mapped_column(Integer)
+    made: Mapped[bool] = mapped_column(Boolean)
+
+    __table_args__ = (Index("ix_shots_player_season", "player_id", "season"),)
+
+
+class LineupStat(Base):
+    __tablename__ = "lineup_stats"
+    group_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    team_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    season: Mapped[str] = mapped_column(String(7), primary_key=True)
+    season_type: Mapped[str] = mapped_column(String(20), primary_key=True)
+    group_quantity: Mapped[int] = mapped_column(Integer, primary_key=True)
+    group_name: Mapped[str | None] = mapped_column(String(300))
+    gp: Mapped[int | None] = mapped_column(Integer)
+    wins: Mapped[int | None] = mapped_column(Integer)
+    losses: Mapped[int | None] = mapped_column(Integer)
+    minutes: Mapped[float | None] = mapped_column(Float)
+    off_rating: Mapped[float | None] = mapped_column(Float)
+    def_rating: Mapped[float | None] = mapped_column(Float)
+    net_rating: Mapped[float | None] = mapped_column(Float)
+    pace: Mapped[float | None] = mapped_column(Float)
