@@ -1,0 +1,31 @@
+{
+  "best_model": "logistic",
+  "trained_through": "2026-04-12",
+  "test_seasons": [
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "summary": {
+    "elo_only": {
+      "accuracy": 0.6696,
+      "log_loss": 0.6036,
+      "brier": 0.2084
+    },
+    "grad_boost": {
+      "accuracy": 0.669,
+      "log_loss": 0.6052,
+      "brier": 0.2087
+    },
+    "home_baseline": {
+      "accuracy": 0.5478,
+      "log_loss": 0.6891,
+      "brier": 0.248
+    },
+    "logistic": {
+      "accuracy": 0.676,
+      "log_loss": 0.5987,
+      "brier": 0.2062
+    }
+  }
+}

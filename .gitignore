@@ -5,4 +5,4 @@ __pycache__/
 .DS_Store
 .pytest_cache/
 *.db
-data/
+data/models/*.joblib
