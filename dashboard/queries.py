@@ -129,6 +129,7 @@ def player_log(pid: int, season: str) -> pd.DataFrame:
                opp.abbreviation AS opp,
                pgs.minutes, pgs.pts, pgs.reb, pgs.ast, pgs.stl, pgs.blk, pgs.tov,
                pgs.fgm, pgs.fga, pgs.fg3m, pgs.fg3a, pgs.ftm, pgs.fta, pgs.plus_minus,
+               pgs.oreb, pgs.dreb, pgs.pf,
                CASE WHEN g.home_team_id = pgs.team_id
                     THEN g.home_score - g.away_score
                     ELSE g.away_score - g.home_score END AS margin
@@ -211,3 +212,58 @@ def box_score(game_id: str) -> pd.DataFrame:
         WHERE pgs.game_id = :gid
         ORDER BY t.abbreviation, COALESCE(pgs.minutes, 0) DESC
     """, gid=game_id)
+
+# ---------- advanced analytics ----------
+@st.cache_data(ttl=600)
+def player_advanced(season: str, min_minutes: int) -> pd.DataFrame:
+    return _run("""
+        SELECT p.full_name AS player, a.gp, a.minutes, a.mpg, a.ts_pct, a.efg_pct, a.usg_pct,
+               a.ast_pct, a.reb_pct, a.tov_pct, a.game_score,
+               a.pts_per36, a.reb_per36, a.ast_per36
+        FROM player_season_advanced a JOIN players p ON p.id = a.player_id
+        WHERE a.season = :season AND a.season_type = 'Regular Season' AND a.minutes >= :mm
+        ORDER BY a.game_score DESC
+    """, season=season, mm=min_minutes)
+
+
+@st.cache_data(ttl=600)
+def team_advanced(season: str) -> pd.DataFrame:
+    return _run("""
+        SELECT t.abbreviation, t.full_name AS team, a.gp, a.wins, a.losses, a.pace,
+               a.off_rtg, a.def_rtg, a.net_rtg, a.efg_pct, a.tov_pct, a.orb_pct, a.ft_rate,
+               a.opp_efg_pct, a.opp_tov_pct, a.drb_pct, a.opp_ft_rate
+        FROM team_season_advanced a JOIN teams t ON t.id = a.team_id
+        WHERE a.season = :season AND a.season_type = 'Regular Season'
+        ORDER BY a.net_rtg DESC
+    """, season=season)
+
+
+@st.cache_data(ttl=600)
+def shot_players(season: str) -> pd.DataFrame:
+    return _run("""
+        SELECT DISTINCT p.id, p.full_name FROM shots s JOIN players p ON p.id = s.player_id
+        WHERE s.season = :season ORDER BY p.full_name
+    """, season=season)
+
+
+@st.cache_data(ttl=600)
+def shots(pid: int, season: str) -> pd.DataFrame:
+    df = _run("""
+        SELECT loc_x, loc_y, made, shot_type, action_type, zone_basic, zone_area,
+               zone_range, distance, period
+        FROM shots WHERE player_id = :pid AND season = :season AND season_type = 'Regular Season'
+    """, pid=pid, season=season)
+    df["made"] = df["made"].astype(bool)
+    return df
+
+
+@st.cache_data(ttl=600)
+def lineups(season: str, tid: int, size: int, min_minutes: int) -> pd.DataFrame:
+    return _run("""
+        SELECT group_name AS lineup, gp, wins, losses, minutes,
+               off_rating, def_rating, net_rating, pace
+        FROM lineup_stats
+        WHERE season = :season AND team_id = :tid AND group_quantity = :size
+          AND season_type = 'Regular Season' AND minutes >= :mm
+        ORDER BY net_rating DESC
+    """, season=season, tid=tid, size=size, mm=min_minutes)
