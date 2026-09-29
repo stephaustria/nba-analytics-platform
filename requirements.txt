@@ -1,3 +1,4 @@
+alembic==1.20.0
 annotated-doc==0.0.5
 annotated-types==0.8.0
 anyio==4.15.1
@@ -13,11 +14,15 @@ httpx==0.28.1
 httpx2==2.13.1
 idna==3.20
 iniconfig==2.3.0
+Mako==1.4.3
+MarkupSafe==3.0.3
 nba_api==1.11.4
 numpy==2.5.3
 packaging==26.3
 pandas==3.0.6
 pluggy==1.6.0
+psycopg==3.3.6
+psycopg-binary==3.3.6
 pydantic==2.13.5
 pydantic_core==2.46.5
 Pygments==2.21.0
@@ -27,6 +32,7 @@ python-dotenv==1.2.3
 PyYAML==6.0.3
 requests==2.34.2
 six==1.17.0
+SQLAlchemy==2.1.1
 starlette==1.7.0
 truststore==0.10.4
 typing-inspection==0.4.4
