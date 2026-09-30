@@ -1,6 +1,6 @@
 # NBA Analytics Platform
 
-![CI](https://github.com/stephaustria/nba-analytics-platform/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/stephaustria/nba-analytics-platform)
 
 An end-to-end NBA data platform: a REST API, a data pipeline into Postgres, an interactive dashboard, advanced metrics, machine-learning predictions, and an AI assistant that answers questions about the data by querying it.
 
